@@ -49,4 +49,6 @@ UserSchema.virtual('friendCount').get(function(){
 // assert.equal(error.errors['email'].message,
 //   'Path `email` is required.');
 
+const User = model('User', UserSchema)
+
 module.exports = User;
