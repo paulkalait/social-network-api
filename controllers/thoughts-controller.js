@@ -68,22 +68,31 @@ const thoughtsController = {
     },
 
 
-    addReaction({params}, res){
+    removeThought({params}, res){
         // updating the thought document
-        Thought.findOneAndUpdate({
-            _id: params.thoughtId
-        },
-        {
-            $pull: { thoughts: params.thoughtId}
-        },
-        {
-            new: true
-        })
-        .then(dbUserData => {
-            if(!dbUserData){
+        Thought.findOneAndDelete({ _id: params.thoughtId})
+        .then(deletedThought => {
+            if(!deletedThought){
                 res.status(404).json({message: "no thought found on this user to delete"})
                 return
             }
+            return User.findOneAndUpdate(
+                {
+                    _id: params.userId
+                },
+                {
+                    $pull: { thoughts: params.thoughtId}
+                },
+                {
+                    new: true
+                }
+            );
+        })
+        .then((dbUserData) => {
+            if(!dbUserData){
+                res.status(404).json({message: "no user found with this id to delete comment"})
+            }
+            // else return the updated user data in res.json format
             res.json(dbUserData)
         })
         .catch( err => res.json(err))

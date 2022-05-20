@@ -14,7 +14,8 @@ const UserSchema = new Schema(
         email: {
             type: String,
             required: true,
-            unique: true
+            unique: true,
+            match: [/.+\@.+\..+/, "must be an email format"]
         },
         thoughts: [
             {
@@ -30,24 +31,6 @@ const UserSchema = new Schema(
 UserSchema.virtual('friendCount').get(function(){
     return this.friends.length
 })
-
-// required email validator?
-// const User = db.model('User', UserSchema)
-// const user = new UserSchema();
-
-// let error;
-// try {
-//   await user.save();
-// } catch (err) {
-//   error = err;
-// }
-    
-// assert.equal(error.errors['email'].message,
-//   'Path `name` is required.');
-
-// error = cat.validateSync();
-// assert.equal(error.errors['email'].message,
-//   'Path `email` is required.');
 
 const User = model('User', UserSchema)
 

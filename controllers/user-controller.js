@@ -1,8 +1,9 @@
 const { User } = require('../Models')
+const { db } = require('../Models/User')
 
 const userController = {
     
-    GetAllUsers(req, res){
+    getAllUsers(req, res){
         User.find({})
         .populate({
             path: 'thoughts',
@@ -30,10 +31,23 @@ const userController = {
         .catch(err => res.json(err))
     },
 
+    createUser({ body}, res){
+        User.create(body)
+        .then(dbUserData => res.json(dbUserData))
+        .catch(err => res.json(err))
+    },
+
 
     updateUser({ params}, res){
-        User.findOneAndUpdate({_id: params.id})
+        User.findOneAndUpdate({_id: params.id}, body, { new: true})
         .then(dbUserData => res.json(dbUserData))
+        .catch(err => res.json(err))
+    },
+
+    // delete user
+    deleteUser({ params}, res){
+        User.findOneAndDelete({_id: params.id})
+        .then(dbUserData => re.json(dbUserData))
         .catch(err => res.json(err))
     }
 }
