@@ -10,6 +10,6 @@ router.route('/:userId').post(addThought)
 router.route('/:userId/:thoughtId').put(addReaction).delete(removeThought)
 
 // api/user/thoughts/reactions/ > delete reaction
-router.route('/:userId/:thoughtId/:reactionId').delete(removeReaction)
+router.route('/:userId/:thoughtId/:reactionId').put(removeReaction)
 
 module.exports = router 

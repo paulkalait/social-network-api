@@ -1,5 +1,5 @@
 const { User } = require('../Models')
-const { db } = require('../Models/User')
+// const { db } = require('../Models/User')
 
 const userController = {
     
@@ -38,7 +38,7 @@ const userController = {
     },
 
 
-    updateUser({ params}, res){
+    updateUser({ body, params }, res){
         User.findOneAndUpdate({_id: params.id}, body, { new: true})
         .then(dbUserData => res.json(dbUserData))
         .catch(err => res.json(err))
@@ -49,6 +49,22 @@ const userController = {
         User.findOneAndDelete({_id: params.id})
         .then(dbUserData => re.json(dbUserData))
         .catch(err => res.json(err))
+    },
+
+    deleteFriend({ params}, res){
+        User.findOneAndUpdate({
+            _id: params.userId
+        },
+        {
+            $pull: { friends: params.friendsId}
+        },
+        {
+            new: true
+        })
+        .then(dbUserData => {
+            res.json(dbUserData)
+        })
+        .catch( err => res.json(err))
     }
 }
 
